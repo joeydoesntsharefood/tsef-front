@@ -1,0 +1,85 @@
+.text {
+  &-nano {
+    font-size: $font-size-nano
+  }
+
+  &-macro {
+    font-size: $font-size-macro
+  }
+  
+  &-base {
+    font-size: $font-size-base
+  }
+  
+  &-xxs {
+    font-size: $font-size-xxs
+  }
+  
+  &-xs {
+    font-size: $font-size-xs
+  }
+  
+  &-sm {
+    font-size: $font-size-sm
+  }
+  
+  &-md {
+    font-size: $font-size-md
+  }
+  
+  &-lg {
+    font-size: $font-size-lg
+  }
+  
+  &-xl {
+    font-size: $font-size-xl
+  }
+  
+  &-xxl {
+    font-size: $font-size-xxl
+  }
+  
+  &-xxxl {
+    font-size: $font-size-xxxl
+  }
+  
+  &-giant {
+    font-size: $font-size-giant
+  }
+  
+  &-huge {
+    font-size: $font-size-huge
+  }
+}
+
+.bg {
+  &-neutral {
+    &-light {
+      background-color: $color-neutral-light;
+    }
+  }
+}
+
+.full {
+  &-width {
+    width: 100%;
+  }
+}
+
+.ma {
+  &-none {
+    margin: 0px;
+  }
+}
+
+.pa {
+  &-nano {
+    padding: $spacing-squish-nano;
+  }
+}
+
+.cursor {
+  &-pointer {
+    cursor: pointer;
+  }
+}

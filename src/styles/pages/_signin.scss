@@ -1,0 +1,63 @@
+.wrapper-signin {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+
+  &__banner {
+    width: 70%;
+    height: 100%;
+
+    background-color: $color-action-medium;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-right-width: $line-height-lightest;
+    border-right-style: solid;
+    border-right-color: $color-action-light;
+  }
+
+  &__form {
+    width: 30%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    &__img {
+      width: 100%;
+      height: 30%;
+    }
+
+    &__tabs {
+      width: 100%;
+      height: 10%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__fields {
+      width: 80%;
+      height: 49%;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      gap: $spacing-micro;
+      
+      &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  }
+}

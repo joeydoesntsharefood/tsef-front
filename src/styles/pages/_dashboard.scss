@@ -1,0 +1,29 @@
+.dashboard {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  &__sidebar {
+    width: 18%;
+    height: 100%;
+  }
+
+  &__content {
+    width: 79.5%;
+    height: 98%;
+
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    
+    &__card {
+      width: 100%;
+      height: 85%;
+    }
+  }
+}

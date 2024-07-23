@@ -1,0 +1,44 @@
+@import './variables';
+@import './bootstrap';
+@import './imports';
+
+html {
+  height: 100vh;
+  width: 100vw;
+}
+
+body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0px !important;
+}
+
+#root {
+  font-family: $font-family-default;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MuiModal-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading__modal {
+  width: 20vw;
+  height: 15vh;
+  border-radius: $radius-300;
+
+  font-family: $font-family-default;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .MuiLinearProgress-root {
+    width: 90%;
+  }
+}

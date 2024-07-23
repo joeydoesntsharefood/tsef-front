@@ -1,0 +1,124 @@
+.btn {
+  border-radius: $radius-300;
+  border-width: $stroke-100;
+  border-radius: $radius-100;
+  outline: none;
+   
+  font-weight: $font-weight-regular;
+  font-family: $font-family-default;
+  line-height: $line-height-lightest;
+  
+  &-primary {
+    background: $color-action-medium;
+    transition: 0.5s ease background;
+    color: $color-neutral-lightest;
+
+    &:hover {
+      background: $color-action-light;
+      border-color: $color-action-light;
+      cursor: pointer;
+  
+      &:active {
+        background: $color-action-dark;
+        border-color: $color-action-dark;;
+      }
+    }
+  
+    &:active {
+      background: $color-action-dark;
+      border-color: $color-action-dark;
+    }
+  
+    &--disabled {
+      background: $color-action-lightest;
+      border-color: $color-action-lightest;
+      cursor: not-allowed;
+  
+      &:hover {
+        background: $color-action-lightest;
+        border-color: $color-action-lightest;
+        cursor: not-allowed;
+        
+        &:active {
+          background: $color-action-lightest;
+          border-color: $color-action-lightest;
+          cursor: not-allowed;
+        }
+      }
+  
+      &:active {
+        background: $color-action-lightest;
+        border-color: $color-action-lightest;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &-secundary {
+    background: $color-transparent;
+    color: $color-action-medium;
+    border-color: $color-action-medium;
+    transition: 0.5s ease background;
+    transition: 0.5s ease color;
+
+    &:hover {
+      background: $color-action-medium;
+      border-color: $color-action-medium;
+      color: $color-neutral-light;
+      cursor: pointer;
+  
+      &:active {
+        background: $color-action-dark;
+        border-color: $color-action-dark;
+      }
+    }
+  
+    &:active {
+      background: $color-action-dark;
+      border-color: $color-action-dark;
+    }
+  
+    &--disabled {
+      background: $color-action-lightest;
+      border-color: $color-action-lightest;
+      color: $color-neutral-lightest;
+      cursor: not-allowed;
+  
+      &:hover {
+        background: $color-action-lightest;
+        border-color: $color-action-lightest;
+        color: $color-neutral-lightest;
+        cursor: not-allowed;
+        
+        &:active {
+          background: $color-action-lightest;
+          border-color: $color-action-lightest;
+          color: $color-neutral-lightest;
+          cursor: not-allowed;
+        }
+      }
+  
+      &:active {
+        background: $color-action-lightest;
+        border-color: $color-action-lightest;
+        color: $color-neutral-lightest;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &-dl {
+    padding: $spacing-squish-lg;
+    font-size: $font-size-sm;
+  }
+
+  &-md {
+    padding: $spacing-squish-md;
+    font-size: $font-size-xs;
+  }
+
+  &-sm {
+    padding: $spacing-squish-sm;
+    font-size: $font-size-base;
+  }
+}
