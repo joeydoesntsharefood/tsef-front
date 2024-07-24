@@ -6,6 +6,12 @@ export const ptBr = {
     confirmPassword: 'Confirmação da senha',
   },
 
+  modals: {
+    form: {
+      cancel: 'Cancelar'
+    }
+  },
+
   pages: {
     signin: {
       btns: {

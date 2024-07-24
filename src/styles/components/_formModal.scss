@@ -1,0 +1,26 @@
+.form-modal {
+  width: 50vw;
+  height: 35vh;
+  border-radius: $radius-300;
+
+  font-family: $font-family-default;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: $spacing-squish-micro;
+
+  &__header, &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__content {
+    width: 100%;
+
+    .form__group {
+      width: 95%;
+    }
+  }
+}

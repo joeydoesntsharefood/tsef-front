@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 import { providersColumns } from "../columns/providers.column";
 import Table from "../components/Table";
 import { useLoad } from "../contexts/UseLoading";
@@ -9,6 +9,8 @@ import { Input } from "../components/Input";
 import TuneIcon from '@mui/icons-material/Tune';
 import Btn from "../components/Btn";
 import t from "../translate";
+import FormModal from "../components/FormModal";
+import UserForm from "../components/ProviderForm";
 
 interface Filter {
   name: string,
@@ -34,12 +36,36 @@ const FILTERS_INITIAL_VALUE: Filter = {
     start: undefined,
     end: undefined,
   },
-}
+};
+
+const textsModals = {
+  'edit': {
+    title: 'Editar fornecedor',
+    confirm: 'Editar'
+  },
+  'create': {
+    title: 'Criar fornecedor',
+    confirm: 'Criar'
+  }
+};
+
+const PROVIDER_DATA_INITIAL: Partial<Provider> = {
+  country_code: '',
+  name: '',
+};
 
 const Providers = () => {
   const [data, setData] = useState<Provider[]>([]);
+  const [providerData, setProviderData] = useState<Partial<Provider>>(PROVIDER_DATA_INITIAL);
   const { boxedLoading, hideLoading } = useLoad();
   const [filters, setFilters] = useState(FILTERS_INITIAL_VALUE);
+  const [showModal, setModal] = useState(false);
+  const [typeForm, setTypeForm] = useState<'edit' | 'create'>('create');
+
+  const handleShowModal = () => setModal(prev => !prev);
+
+  const handleProvider = (value: Partial<Provider>) =>
+    setProviderData(prev => ({ ...prev, ...value }));
 
   const getData = async () => {
     boxedLoading('Carregando os seus dados');
@@ -69,36 +95,50 @@ const Providers = () => {
   }, []);
 
   return (
-    <div className='provider-table'>
-      <div className='provider-table__filters'>
-        <Input.Text
-          label="Busque por nome"
-          name="name"
-          value={filters}
-          onChange={handleFilters}
-        />
-
-        <Btn
-          size="sm"
-          type="primary"
-        >
-          {t('pages.providers.btns.create')}
-        </Btn>
-
-        <Btn
-          size="sm"
-          type="primary"
-        >
-          <TuneIcon />
-        </Btn>
-      </div>
-
-      <Table
-        columns={providersColumns(edit)}
-        data={data}
-        className="provider-table__table"
+    <>
+      <FormModal
+        onClose={handleShowModal}
+        open={showModal}
+        form={createElement(UserForm, { data: providerData, onChange: handleProvider })}
+        texts={textsModals[typeForm]}
       />
-    </div>
+
+      <div className='provider-table'>
+        <div className='provider-table__filters'>
+          <Input.Text
+            label="Busque por nome"
+            name="name"
+            value={filters}
+            onChange={handleFilters}
+          />
+
+          <Btn
+            size="sm"
+            type="primary"
+            onClick={() => {
+              setProviderData(null);
+              setTypeForm('create');
+              handleShowModal();
+            }}
+          >
+            {t('pages.providers.btns.create')}
+          </Btn>
+
+          <Btn
+            size="sm"
+            type="primary"
+          >
+            <TuneIcon />
+          </Btn>
+        </div>
+
+        <Table
+          columns={providersColumns(edit)}
+          data={data}
+          className="provider-table__table"
+        />
+      </div>
+    </>
   )
 };
 
