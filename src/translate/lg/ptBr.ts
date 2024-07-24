@@ -17,6 +17,11 @@ export const ptBr = {
     },
     dashboard: {
       signout: 'Sair'
+    },
+    providers: {
+      btns: {
+        create: 'Criar novo fornecedor'
+      }
     }
   }
 };

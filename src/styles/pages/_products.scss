@@ -1,0 +1,46 @@
+.products-table {
+  width: 100%;
+  height: 100%;
+
+  &__filters {
+    display: flex;
+    width: 100%;
+    height: 8%;
+  }
+  
+  &__table {
+    &__column {
+      &--name {
+        width: 40%;
+      }
+
+      &--providerId {
+        width: 15%;
+      }
+
+      &--category {
+        width: 15%;
+      }
+      
+      &--price,
+      &--quatity {
+        width: 5%;
+      }
+
+      &--createdAt,
+      &--updatedAt {
+        width: 10%;
+      }
+
+      &--id {
+        width: 3%;
+      }
+    }
+
+    &__row {
+      &--id, &--country_code, &--createdAt, &--updatedAt {
+        text-align: center;
+      }
+    }
+  }
+}
