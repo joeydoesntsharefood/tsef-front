@@ -2,9 +2,21 @@ import { changeTimeZone } from "../utils/changeTimeZone";
 import { Column } from "../components/Table";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { createElement } from "react";
+import { Product } from "../types/product.type";
 
-const productsColumns: (edit: (id: string) => void) => Array<Column> = (edit) => {
+const productsColumns: (select: (e: boolean, id: string) => void, edit: (id: Product) => void) => Array<Column> = (select, edit) => {
   return [
+    ...(select
+      ? [{
+          key: 'id',
+          title: 'Selecionar',
+          render: (value: string) => {
+            
+            return <input type='checkbox' onChange={e => select(e.target.checked, value)} />;
+          }
+        }]
+      : []
+    ),
     {
       key: 'name',
       title: 'Nome',
@@ -22,8 +34,18 @@ const productsColumns: (edit: (id: string) => void) => Array<Column> = (edit) =>
       title: 'Categoria',
     },
     {
-      key: 'providerId',
+      key: 'Provider',
       title: 'Fornecedor',
+      render: (value) => {
+        return value?.name;
+      }
+    },
+    {
+      key: 'Provider',
+      title: 'Código de pais',
+      render: (value) => {
+        return value?.country_code;
+      }
     },
     {
       key: 'createdAt',

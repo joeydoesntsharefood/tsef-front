@@ -9,13 +9,14 @@ interface Props {
   onChange?(value: Partial<Provider>): void;
 }
 
-const Provider: FC<Props> = ({ data, onChange }) => (
+const ProviderForm: FC<Props> = ({ data, onChange, errors }) => (
     <>
       <Input.Text
         value={data}
         label="Insira um nome"
         name="name"
         onChange={onChange}
+        error={errors}
       />
 
       <Input.Text
@@ -23,8 +24,9 @@ const Provider: FC<Props> = ({ data, onChange }) => (
         label="Insira o codigo do pais"
         name="country_code"
         onChange={onChange}
+        error={errors}
       />
     </>
   );
 
-export default Provider;
+export default ProviderForm;

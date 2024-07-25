@@ -8,8 +8,9 @@ interface ContextProps {
   isAuth: boolean;
   signin: (data: Auth) => Promise<boolean>;
   signout: () => Promise<boolean>;
-  signup: (data: Register) => Promise<any>;
+  signup: (data: Register) => Promise<boolean>;
   user?: User;
+  getAuthenticate(): Promise<boolean>;
 }
 
 const Context = createContext<ContextProps | undefined>(undefined);
@@ -18,7 +19,11 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>();
 
   const getRefreshToken = async (value: string) => {
-    const res = await unauthService.refreshToken(value);
+    const res = await toast.promise<any>(unauthService.refreshToken(value), {
+    error: 'Ocorreu um erro ao verificar o seu acesso anterior.',
+    pending: 'Estamos verificando o seu acesso anterior.',
+    success: 'Verificamos o seu acesso anterior!'
+    });
 
     setUser(res?.data?.user);
     
@@ -31,18 +36,28 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       'refreshToken', 
       res?.data?.tokens?.refreshToken?.token
     );
-  } 
+  }
 
-  useEffect(() => {
+  const getAuthenticate = async () => {
     const refreshToken = window.localStorage.getItem('refreshToken');
 
-    if (!user?.id && refreshToken) {
-      getRefreshToken(refreshToken);
+    if (!user?.id && refreshToken !== null) {
+      await getRefreshToken(refreshToken);
+      
+      return true;
     }
-  }, [user?.id])
+
+    return false;
+  };
+
+  useEffect(() => {
+    getAuthenticate();
+  }, [user?.id]);
+
 
   const signin = async (data: Auth) => {
-    const res = await unauthService.signin(data);
+    const res =  await unauthService.signin(data)
+      
 
     if (!res?.success) {
       toast.error('Ocorreu um erro.');
@@ -104,6 +119,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     signout,
     user,
     signup,
+    getAuthenticate,
   }), [user]);
 
   return (

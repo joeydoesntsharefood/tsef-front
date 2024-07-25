@@ -10,7 +10,9 @@ import TuneIcon from '@mui/icons-material/Tune';
 import Btn from "../components/Btn";
 import t from "../translate";
 import FormModal from "../components/FormModal";
-import UserForm from "../components/ProviderForm";
+import ProviderForm from "../components/ProviderForm";
+import formatError from "../utils/formatError";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Filter {
   name: string,
@@ -61,14 +63,22 @@ const Providers = () => {
   const [filters, setFilters] = useState(FILTERS_INITIAL_VALUE);
   const [showModal, setModal] = useState(false);
   const [typeForm, setTypeForm] = useState<'edit' | 'create'>('create');
+  const [errors, setErrors] = useState<Record<string, string>>();
+  const [select, setSelect] = useState<string[]>([]);
+
+  const handleSelect = (insert: boolean, value: string) => {
+    if (insert) setSelect(prev => [...prev, value]); 
+    else 
+      setSelect(prev => prev.filter(id => id !== value));
+  }
 
   const handleShowModal = () => setModal(prev => !prev);
 
   const handleProvider = (value: Partial<Provider>) =>
     setProviderData(prev => ({ ...prev, ...value }));
 
-  const getData = async () => {
-    boxedLoading('Carregando os seus dados');
+  const getData = async (showLoad: boolean = true) => {
+    showLoad && boxedLoading('Carregando os seus dados');
     try {
       const res = await providerService.find();
 
@@ -80,12 +90,70 @@ const Providers = () => {
       console.error(err);
       toast.error(err?.message ?? 'Ocorreu um erro.');
     }
-    hideLoading()
+    showLoad && hideLoading()
   };
 
-  const edit = (id: string) => {
-    console.log(id);
+  const onInsertProvider = async () => {
+    boxedLoading('Criando o seu fornecedor.');
+
+    const res = await providerService.create(providerData);
+
+    if (!res?.success) {
+      setErrors(formatError(res?.error));
+      toast.error(res?.message ?? 'Ocorreu um erro ao criar o fornecedor'); 
+    } else {
+      await getData(false);
+      
+      
+      handleShowModal();
+      
+      toast.success('Fornecedor criado com sucesso!');
+    }
+
+    hideLoading();
   };
+
+  const onEditProvider = async () => {
+    boxedLoading('Editando o seu fornecedor.');
+
+    const res = await providerService.edit(providerData?.id, providerData);
+
+    if (!res?.success) {
+      setErrors(formatError(res?.error));
+      toast.error(res?.message ?? 'Ocorreu um erro ao editar o fornecedor'); 
+    } else {
+      await getData(false);
+      
+      
+      handleShowModal();
+      
+      toast.success('Fornecedor editado com sucesso!');
+    }
+
+    hideLoading();
+  };
+
+  const edit = (data: Provider) => {
+    setProviderData(data);
+    setTypeForm('edit');
+    handleShowModal();
+  };
+  
+  const deleteMany = async () => {
+    boxedLoading(`Deletando fornecedor${select.length > 1 ? 'es' : ''}`);
+    for await (const id of select) {
+      try {
+        const res = await providerService.delete(id);
+
+        console.log(res)
+      } catch (e) {
+        toast.error(e);
+      }
+    }
+
+    await getData();
+    hideLoading();
+  }
 
   const handleFilters = (value: Partial<Filter>) =>
     setFilters(prev => ({ ...prev, ...value }));
@@ -97,9 +165,10 @@ const Providers = () => {
   return (
     <>
       <FormModal
+        onSubmit={typeForm === 'create' ? onInsertProvider : onEditProvider}
         onClose={handleShowModal}
         open={showModal}
-        form={createElement(UserForm, { data: providerData, onChange: handleProvider })}
+        form={createElement(ProviderForm, { data: providerData, onChange: handleProvider, errors })}
         texts={textsModals[typeForm]}
       />
 
@@ -127,13 +196,22 @@ const Providers = () => {
           <Btn
             size="sm"
             type="primary"
+            disabled={select.length === 0}
+            onClick={deleteMany}
+          >
+            <DeleteForeverIcon />
+          </Btn>
+
+          <Btn
+            size="sm"
+            type="primary"
           >
             <TuneIcon />
           </Btn>
         </div>
 
         <Table
-          columns={providersColumns(edit)}
+          columns={providersColumns(handleSelect, edit)}
           data={data}
           className="provider-table__table"
         />

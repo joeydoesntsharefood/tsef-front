@@ -1,6 +1,6 @@
 .form-modal {
   width: 50vw;
-  height: 35vh;
+  height: min-content;
   border-radius: $radius-300;
 
   font-family: $font-family-default;
@@ -14,6 +14,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__footer {
+    margin-top: $spacing-micro;
   }
 
   &__content {

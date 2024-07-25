@@ -52,6 +52,12 @@
   }
 }
 
+.text {
+  &-error {
+  color: $color-alert-error-theme;
+  }
+}
+
 .bg {
   &-neutral {
     &-light {

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { routes } from "../route";
-import { useAuth } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import t from "../translate";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';

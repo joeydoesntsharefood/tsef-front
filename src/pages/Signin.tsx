@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../components/Input";
 import { Auth, Register } from "../types/auth.type";
 import Btn from "../components/Btn";
-import { useAuth } from "../contexts/UserContext";
+import { useAuth } from "../contexts/AuthContext";
 import t from "../translate";
 import { Tab, Tabs } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLoad } from "../contexts/UseLoading";
+import { toast } from "react-toastify";
 
 type _tab =
   'signin'
@@ -39,10 +40,20 @@ const INITIAL_REGISTER_DATA_VALUE: Register = {
 const Signin = () => {
   const [data, setData] = useState<Auth>(INITIAL_DATA_VALUE);
   const [registerData, setRegisterData] = useState<Register>(INITIAL_REGISTER_DATA_VALUE);
-  const { signin, signup } = useAuth();
+  const { signin, signup, getAuthenticate } = useAuth();
   const [tab, setTab] = useState<_tab>('signin');
   const history = useNavigate();
   const { boxedLoading, hasLoading, hideLoading } = useLoad();
+
+  useEffect(() => {
+    const verifyAuthenticate = async () => {
+      const res = await getAuthenticate();
+
+      if (res) history('/dashboard');
+    };
+
+    verifyAuthenticate();
+  }, []);
 
   const onChange = (value: Partial<Auth>) =>
     setData(prev => ({ ...prev, ...value }));

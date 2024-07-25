@@ -3,6 +3,10 @@ $secondary: #38ef7d;
 $white: #fff;
 $gray: #9b9b9b;
 
+.form {
+  width: 100%;
+}
+
 .form__group {
   position: relative;
   padding: $spacing-xxs $spacing-xxxs;
