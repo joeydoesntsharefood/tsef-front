@@ -1,7 +1,6 @@
-Inicie o projeto seguindo as necessidades da variaveis de ambiente,
-no caso adicione um BASE_URL (referente a path da api, lembre-se que a api se encontra em v1, portanto <URI>+<PORT>+<'v1'>)
+Inicie o projeto seguindo as necessidades da variaveis de ambiente apresentadas no .env.example,
 abaixo um exemplo:
-  - http://localhost:8713/v1
+  - BASE_URL=http://localhost:8713/v1
 
 Após isso instale as depêndencias usando o seu gerenciador de preferência:
   - yarn
