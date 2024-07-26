@@ -2,6 +2,8 @@
   width: 100%;
   height: 100%;
 
+  background-color: $color-neutral-light;
+
   display: flex;
   align-items: center;
 
@@ -12,7 +14,7 @@
     transition: 1s ease width;
 
     &--collapse {
-      width: 2%;
+      width: 3%;
       overflow: hidden;
       
       .sidebar__items__item {
@@ -27,12 +29,14 @@
   }
 
   &__content {
-    width: 79.5%;
+    width: 80.7%;
     height: 98%;
 
+    transition: 1s ease width;
+
     &--collapse {
-      width: 95.5%;
-    }
+      width: 96.5%;
+    }   
 
     overflow: auto;
 

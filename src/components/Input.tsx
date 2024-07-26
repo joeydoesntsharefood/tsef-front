@@ -14,14 +14,13 @@ interface SubComponents extends Omit<Props, 'name' | 'label'> {
   label?: string;
 }
 
-
 const BaseInput: FC<Props> = ({ value, onChange, label, disabled, name, type, error }) => (
     <div className='form'>
       <div className='form__group field'>
         <input
           value={value?.[name]}
           type={type ?? 'text'}
-          placeholder={label}
+        placeholder={label}
           id={name}
           name={name}
           className={`form__field input input-${type ?? 'text'}${disabled ? ' input--disabled' : ''}${error?.[name] ? ' input--error' : ''}`}

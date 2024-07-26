@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ProductForm: FC<Props> = ({ data, disabled, errors, onChange, providerOptions }) => (
-    <>
+    <div className='flex-col gap-xs'>
       <Input.Text 
         name='name'
         label="Insira um nome"
@@ -41,7 +41,7 @@ const ProductForm: FC<Props> = ({ data, disabled, errors, onChange, providerOpti
       />
 
       <Input.Number 
-        name='quatity'
+        name='quantity'
         label="Insira uma quantidade"
         value={data}
         onChange={onChange}
@@ -60,14 +60,14 @@ const ProductForm: FC<Props> = ({ data, disabled, errors, onChange, providerOpti
 
       <Select
         name='providerId'
-        label="Escolha um fornecedor"
+        label="Fornecedor"
         value={data}
         onChange={onChange}
         disabled={disabled}
         error={errors}
         options={providerOptions}
       />
-    </>
+    </div>
   );
 
 export default ProductForm;

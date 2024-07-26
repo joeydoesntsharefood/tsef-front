@@ -89,3 +89,25 @@
     cursor: pointer;
   }
 }
+
+.flex {
+  display: flex;
+
+  &-col {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.gap {
+  &-xs {
+    gap: $spacing-xs;
+  }
+}
+
+.items {
+  &-center {
+    display: flex;
+    align-items: center;
+  }
+}

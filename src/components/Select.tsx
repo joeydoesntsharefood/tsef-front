@@ -27,6 +27,7 @@ const Select: FC<Props> = ({
           className={`form__field select ${disabled ? ' select--disabled' : ''}${error?.[name] ? ' select--error' : ''}`}
           onChange={e => onChange && onChange({ [name]: e.target.value })}
         >
+          <option value=''>Escolha um fornecedor</option>
           { options &&
             options.map(({ label, value }) => <option value={value}>{label}</option>)
           }

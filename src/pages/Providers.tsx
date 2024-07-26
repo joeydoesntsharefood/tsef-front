@@ -5,7 +5,6 @@ import { useLoad } from "../contexts/UseLoading";
 import { Provider } from "../types/provider.type";
 import { toast } from "react-toastify";
 import providerService from "../services/provider.service";
-import { Input } from "../components/Input";
 import TuneIcon from '@mui/icons-material/Tune';
 import Btn from "../components/Btn";
 import t from "../translate";
@@ -13,31 +12,13 @@ import FormModal from "../components/FormModal";
 import ProviderForm from "../components/ProviderForm";
 import formatError from "../utils/formatError";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Badge, MenuItem, Pagination, Select } from "@mui/material";
+import { IPagination } from "../types/globals";
+import ProviderFilter, { IProviderFilter } from "../components/ProviderFilter";
 
-interface Filter {
-  name: string,
-  country_code: string,
-  createdAt: {
-    start: string,
-    end: string,
-  },
-  updatedAt: {
-    start: string,
-    end: string,
-  },
-}
-
-const FILTERS_INITIAL_VALUE: Filter = {
-  name: undefined,
-  country_code: undefined,
-  createdAt: {
-    start: undefined,
-    end: undefined,
-  },
-  updatedAt: {
-    start: undefined,
-    end: undefined,
-  },
+const FILTERS_INITIAL_VALUE: IProviderFilter = {
+  name: '',
+  country_code: '',
 };
 
 const textsModals = {
@@ -56,6 +37,13 @@ const PROVIDER_DATA_INITIAL: Partial<Provider> = {
   name: '',
 };
 
+const INITIAL_PAGINATION_VALUE: IPagination = {
+  page: 1,
+  pageSize: 10,
+  totalDocs: 0,
+  totalPages: 0, 
+};
+
 const Providers = () => {
   const [data, setData] = useState<Provider[]>([]);
   const [providerData, setProviderData] = useState<Partial<Provider>>(PROVIDER_DATA_INITIAL);
@@ -65,6 +53,15 @@ const Providers = () => {
   const [typeForm, setTypeForm] = useState<'edit' | 'create'>('create');
   const [errors, setErrors] = useState<Record<string, string>>();
   const [select, setSelect] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<IPagination>(INITIAL_PAGINATION_VALUE);
+  const [sort, setSort] = useState<string>('');
+  const [country_codes, setCountry_codes] = useState<{ label: string, value: string }[]>([]);
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(false);
+
+  const handleShowFilterModal = () => setShowFilterModal(prev => !prev);
+
+  const handlePagination = (value: Partial<IPagination>) => 
+    setPagination(prev => ({ ...prev, ...value }));
 
   const handleSelect = (insert: boolean, value: string) => {
     if (insert) setSelect(prev => [...prev, value]); 
@@ -80,17 +77,30 @@ const Providers = () => {
   const getData = async (showLoad: boolean = true) => {
     showLoad && boxedLoading('Carregando os seus dados');
     try {
-      const res = await providerService.find();
+      const params = {
+        ...pagination,
+        ...(filters?.name && filters.name.length !== 0 ? { name: filters.name } : {}),
+        ...(filters?.country_code && filters.country_code.length !== 0 ? { country_code: filters.country_code } : {}),
+      };
+
+      const res = await providerService.find(params);
 
       if (!res?.success) 
         throw new Error(res?.message ?? 'Ocorreu um erro ao buscar os fornecedores.'); 
     
-      setData(res?.data);
+      setData(res?.data?.data);
+      setPagination(res?.data?.pagination);
     } catch (err) {
       console.error(err);
       toast.error(err?.message ?? 'Ocorreu um erro.');
     }
     showLoad && hideLoading()
+  };
+
+  const handleSort = async (value: string) => {
+    if (!value.includes('RM')) setSort(value);
+    else setSort('');
+    await getData();
   };
 
   const onInsertProvider = async () => {
@@ -111,6 +121,19 @@ const Providers = () => {
     }
 
     hideLoading();
+  };
+
+  const getCountryCodes = async () => {
+    try {
+      const res = await providerService.country_codes();
+
+      if (!res?.success)
+        throw new Error(res?.data ?? 'Não foi possível encontrar os códigos de area de fornecedores.');
+
+      setCountry_codes(res?.data.map((value: string) => ({ value, label: value })));
+    } catch (err) {
+      toast.error(err?.message ?? 'Ocorreu um erro.');
+    }
   };
 
   const onEditProvider = async () => {
@@ -134,6 +157,7 @@ const Providers = () => {
   };
 
   const edit = (data: Provider) => {
+    setErrors(null);
     setProviderData(data);
     setTypeForm('edit');
     handleShowModal();
@@ -155,15 +179,38 @@ const Providers = () => {
     hideLoading();
   }
 
-  const handleFilters = (value: Partial<Filter>) =>
+  const handleFilters = (value: Partial<IProviderFilter>) =>
     setFilters(prev => ({ ...prev, ...value }));
 
   useEffect(() => {
+    getCountryCodes();
     getData();
   }, []);
 
   return (
     <>
+      <FormModal
+        texts={{
+          confirm: 'Buscar',
+          title: 'Filtros',
+          cancel: 'Limpar filtros'
+        }}
+        form={createElement(ProviderFilter, {
+          data: filters,
+          onChange: handleFilters,
+          options: country_codes,
+        })}
+        onClose={handleShowFilterModal}
+        onCancel={() => {
+          handleFilters(FILTERS_INITIAL_VALUE);
+        }}
+        onSubmit={async () => {
+          await getData(true);
+          handleShowFilterModal();
+        }}
+        open={showFilterModal}
+      />
+
       <FormModal
         onSubmit={typeForm === 'create' ? onInsertProvider : onEditProvider}
         onClose={handleShowModal}
@@ -174,47 +221,73 @@ const Providers = () => {
 
       <div className='provider-table'>
         <div className='provider-table__filters'>
-          <Input.Text
-            label="Busque por nome"
-            name="name"
-            value={filters}
-            onChange={handleFilters}
-          />
+          <div className='provider-table__filters__actions'>
+            <Btn
+              size="sm"
+              type="primary"
+              onClick={() => {
+                setErrors(null);
+                setProviderData(null);
+                setTypeForm('create');
+                handleShowModal();
+              }}
+            >
+              {t('pages.providers.btns.create')}
+            </Btn>
 
-          <Btn
-            size="sm"
-            type="primary"
-            onClick={() => {
-              setProviderData(null);
-              setTypeForm('create');
-              handleShowModal();
-            }}
-          >
-            {t('pages.providers.btns.create')}
-          </Btn>
+            <Badge color="primary" badgeContent={select.length}>
+              <Btn
+                size="sm"
+                type="primary"
+                disabled={select.length === 0}
+                onClick={deleteMany}
+              >
+                <DeleteForeverIcon />
+              </Btn>
+            </Badge>
 
-          <Btn
-            size="sm"
-            type="primary"
-            disabled={select.length === 0}
-            onClick={deleteMany}
-          >
-            <DeleteForeverIcon />
-          </Btn>
-
-          <Btn
-            size="sm"
-            type="primary"
-          >
-            <TuneIcon />
-          </Btn>
+            <Btn
+              size="sm"
+              type="primary"
+              onClick={handleShowFilterModal}
+            >
+              <TuneIcon />
+            </Btn>
+          </div>
         </div>
 
         <Table
-          columns={providersColumns(handleSelect, edit)}
+          columns={providersColumns({
+            select: handleSelect,
+            edit,
+            sort: handleSort,
+          })}
           data={data}
           className="provider-table__table"
+          orderBy={sort}
         />
+
+        <div className='full-width flex items-center'>
+          <Pagination
+            page={pagination.page}
+            count={pagination.totalPages}
+            onChange={async (_, page) => {
+              handlePagination({ page });
+            }}
+          />
+
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={pagination.pageSize}
+            onChange={e => handlePagination({ pageSize: Number(e.target.value) })}
+          >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+            <MenuItem value={100}>100</MenuItem>
+          </Select>
+        </div>
       </div>
     </>
   )

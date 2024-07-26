@@ -3,5 +3,6 @@ export const productsPath = {
   'create': '/auth/product',
   'delete': '/auth/product/:id',
   'edit': '/auth/product/:id',
-  'index': '/auth/product/:id'
+  'index': '/auth/product/:id',
+  'count': '/auth/product/data/count',
 }

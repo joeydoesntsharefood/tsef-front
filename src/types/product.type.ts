@@ -5,7 +5,7 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
-  quatity: number;
+  quantity: number;
   category: string;
   providerId?: string;
   Provider?: Provider;

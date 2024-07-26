@@ -11,11 +11,13 @@ interface Props {
   texts: {
     title: string;
     confirm: string;
+    cancel?: string;
   }
+  onCancel?(): void;
   onSubmit(): Promise<void>;
 }
 
-const FormModal: FC<Props> = ({ onClose, open, texts, form, onSubmit }) => (
+const FormModal: FC<Props> = ({ onClose, onCancel, open, texts, form, onSubmit }) => (
     <Modal
       open={open}
       onClose={onClose}
@@ -35,9 +37,9 @@ const FormModal: FC<Props> = ({ onClose, open, texts, form, onSubmit }) => (
           <Btn
             size="sm"
             type="secundary"
-            onClick={onClose}
+            onClick={onCancel ?? onClose}
           >
-            {t('modals.form.cancel')}
+            {texts?.cancel ?? t('modals.form.cancel')}
           </Btn>
           
           <Btn

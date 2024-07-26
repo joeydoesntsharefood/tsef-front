@@ -12,6 +12,15 @@ const productsService = {
       return err;
     }
   },
+  count: async (params?: any) => {
+    try {
+      const res = await app.get(productsPath.count, { params });
+
+      return res.data;
+    } catch (err) {
+      return err;
+    }
+  },
   create: async (data: Partial<Product>, params?: any) => {
     try {
       const res = await app.post(productsPath.create, data, { params });

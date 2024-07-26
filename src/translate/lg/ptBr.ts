@@ -28,6 +28,11 @@ export const ptBr = {
       btns: {
         create: 'Criar novo fornecedor'
       }
+    },
+    products: {
+      btns: {
+        create: 'Criar novo produto'
+      }
     }
   }
 };

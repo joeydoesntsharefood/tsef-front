@@ -29,10 +29,10 @@ $color-transparent: transparent;
 // Family
 $font-family-default: 'Roboto';
 // Weight
-$font-weight-light: 'Light';
-$font-weight-regular: 'Regular';
-$font-weight-medium: 'Medium';
-$font-weight-bold: 'Bold';
+$font-weight-light: lighter;
+$font-weight-regular: normal;
+$font-weight-medium: initial;
+$font-weight-bold: bold;
 // Size
 $font-size-nano: 12px;
 $font-size-macro: 14px;

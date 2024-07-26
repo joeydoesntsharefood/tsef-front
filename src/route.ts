@@ -59,12 +59,4 @@ export const routes: Route[] = [
     sidebar: true,
     icon: createElement(Inventory2Icon),
   },
-  {
-    path: '/user',
-    element: createElement(User),
-    title: 'Perfil do usuário',
-    unAuth:  false,
-    sidebar: true,
-    icon: createElement(PersonIcon),
-  },
 ]

@@ -1,67 +1,65 @@
-$primary: #11998e;
-$secondary: #38ef7d;
-$white: #fff;
-$gray: #9b9b9b;
-
 .form {
   width: 100%;
-}
+  height: 80%;
 
-.form__group {
-  position: relative;
-  padding: $spacing-xxs $spacing-xxxs;
-  margin-top: 10px;
-  width: 100%;
-  background: $color-neutral-lightest;
-  border: $stroke-100 solid $color-neutral-medium-04;
-  border-radius: $radius-200;
-}
-
-.form__field {
-  font-family: $font-family-default;
-  width: 100%;
-  border: none;
-  background: $color-transparent;
-  outline: 0;
-  font-size: $font-size-xs;
-  
-  transition: border-color 0.2s;
-
-  &::placeholder {
-    color: transparent;
-  }
-
-  &:placeholder-shown ~ .form__label {
-    font-size: 1.3rem;
-    cursor: text;
-    color: $color-neutral-medium-02;
-    top: 30%;
-  }
-}
-
-.form__label {
-  position: absolute;
-  top: 0;
-  display: block;
-  transition: 0.2s;
-  font-size: 1rem;
-  color: $gray;
-}
-
-.form__field:focus {
-  ~ .form__label {
+  &__label {
     position: absolute;
     top: 0;
     display: block;
     transition: 0.2s;
-    font-size: 1rem;
-    color: $primary;
-    font-weight:700;    
+    font-size: $font-size-nano;
+    color: $color-neutral-medium-02;
   }
-}
-/* reset input */
-.form__field{
-  &:required, &:invalid { 
-    box-shadow:none; 
+
+  &__group {
+    position: relative;
+    padding: $spacing-xxs $spacing-xxxs;
+    height: 40%;
+    background: $color-neutral-lightest;
+    border: $stroke-100 solid $color-neutral-medium-04;
+    border-radius: $radius-200;
+  }
+
+  &__field {
+    font-family: $font-family-default;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: $color-transparent;
+    outline: 0;
+    font-size: $font-size-xs;
+    
+    transition: border-color 0.2s;
+  
+    &::placeholder {
+      color: transparent;
+    }
+  
+    &:placeholder-shown ~ .form__label {
+      top: 30%;
+      cursor: text;
+      color: $color-neutral-medium-02;
+      
+      font-size: $font-size-xs;
+      font-weight: $font-weight-regular;
+      line-height: $line-height-lightest;
+    }
+  }
+
+  &__field:focus {
+    ~ .form__label {
+      position: absolute;
+      top: 2;
+      display: block;
+      transition: 0.2s;
+      font-size: $font-size-nano;
+      color: $color-neutral-medium-02;    
+    }
+  }
+
+  &__field{
+    &:required, &:invalid { 
+      box-shadow:none; 
+    }
   }
 }

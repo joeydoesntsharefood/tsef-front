@@ -12,6 +12,24 @@ const providerService = {
       return err;
     }
   },
+  country_codes: async (params?: any) => {
+    try {
+      const res = await app.get(providerPath.country_codes, { params });
+
+      return res.data;
+    } catch (err) {
+      return err;
+    }
+  },
+  count: async (params?: any) => {
+    try {
+      const res = await app.get(providerPath.count, { params });
+
+      return res.data;
+    } catch (err) {
+      return err;
+    }
+  },
   create: async (data: Partial<Provider>, params?: any) => {
     try {
       const res = await app.post(providerPath.create, data, { params });

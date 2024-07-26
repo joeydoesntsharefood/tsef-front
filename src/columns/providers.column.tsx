@@ -3,14 +3,21 @@ import { Column } from "../components/Table";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { createElement } from "react";
 import { Provider } from "../types/provider.type";
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-const providersColumns: (select: (e: boolean, id: string) => void, edit: (id: Provider) => void) => Array<Column> = 
-  (select, edit) => {
+interface Props {
+  select(e: boolean, id: string): void;
+  edit(id: Provider): void;
+  sort(value: string): void;
+} 
+
+const providersColumns: (props: Props) => Array<Column> = 
+  ({ select, edit, sort }) => {
     return [
       ...(select
         ? [{
             key: 'id',
-            title: 'Selecionar',
+            title: createElement(CheckBoxIcon),
             render: (value: string) => {
               
               return <input type='checkbox' onChange={e => select(e.target.checked, value)} />;
@@ -21,24 +28,28 @@ const providersColumns: (select: (e: boolean, id: string) => void, edit: (id: Pr
       {
         key: 'name',
         title: 'Nome',
+        sort,
       },
       {
         key: 'country_code',
         title: 'Código do país',
+        sort,
       },
       {
         key: 'createdAt',
         title: 'Criado em',
         render: value => {
           return changeTimeZone(value);
-        } 
+        },
+        sort
       },
       {
         key: 'updatedAt',
         title: 'Atualizado em',
         render: value => {
           return changeTimeZone(value);
-        }
+        },
+        sort,
       },
       {
         key: 'id',
