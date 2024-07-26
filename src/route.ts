@@ -4,10 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import Infos from "./pages/Infos";
 import Providers from "./pages/Providers";
 import Products from "./pages/Products";
-import User from "./pages/User";
 
 import Inventory2Icon from '@mui/icons-material/Inventory2';
-import PersonIcon from '@mui/icons-material/Person';
 import PrecisiconManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import InfoIcon from '@mui/icons-material/Info';
 
